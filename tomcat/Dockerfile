@@ -5,3 +5,4 @@ COPY webappwar /usr/local/tomcat/webapps/
 WORKDIR /usr/local/tomcat/webapps
 RUN mvn package
 RUN mv target/mywebapp.war .
+EXPOSE 8080
