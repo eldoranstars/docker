@@ -1,0 +1,14 @@
+#version "2.4"
+
+services:       
+        nginx:
+                image: eldoranstars/nginx_centos:2.1
+                container_name: nginx
+                ports:
+                - 8080:80
+
+        tomcat:
+                image: eldoranstars/tomcat:2.4
+                container_name: tomcat
+                ports:
+                - 8084:8080
