@@ -1,14 +1,42 @@
-#version "2.4"
-
 services:       
-        nginx:
-                image: eldoranstars/nginx_centos:2.1
-                container_name: nginx
-                ports:
-                - 8080:80
+  nginx:
+    image: eldoranstars/nginx_centos
+    container_name: nginx
+    ports:
+      - 8080:80
+    volumes:
+      - ./volume_nginx:/etc/nginx/conf.d
 
-        tomcat:
-                image: eldoranstars/tomcat:2.4
-                container_name: tomcat
-                ports:
-                - 8084:8080
+  nexus:
+    image: eldoranstars/nexus
+    container_name: nexus
+    ports:
+      - 8081:8081
+    volumes:
+      - ./volume_nexus:/nexus-data
+
+
+  jenkins:
+      image: eldoranstars/jenkins
+      container_name: jenkins
+      ports:
+        - 8082:8080
+      volumes:
+        - ./volume_jenkins:/var/jenkins_home
+
+  tomcat:
+    image: eldoranstars/tomcat
+    container_name: tomcat
+    ports:
+      - 8084:8080
+
+#volumes:
+#  volume_nginx: {}
+#  volume_jenkins: {}
+#  volume_nexus: {}
+
+#networks:
+#  front:
+#    driver: bridge
+#  back:
+#    driver: bridge
