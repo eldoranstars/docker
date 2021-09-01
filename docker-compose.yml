@@ -4,6 +4,11 @@ services:
     container_name: nginx
     ports:
       - 8080:80
+    networks:
+      frontend:
+          ipv4_address: 172.26.0.10
+      backend:
+          ipv4_address: 172.25.0.10
     volumes:
       - ./volume_nginx:/etc/nginx/conf.d
     depends_on:
@@ -13,9 +18,13 @@ services:
 
   nexus:
     image: eldoranstars/nexus
+    mem_limit: 2g
+    cpus: 0.45
     container_name: nexus
     ports:
       - 8081:8081
+    networks:
+      - backend
     volumes:
       - ./volume_nexus:/nexus-data
     environment:
@@ -23,9 +32,13 @@ services:
 
   jenkins:
     image: eldoranstars/jenkins
+    mem_limit: 500m
+    cpus: 0.75
     container_name: jenkins
     ports:
       - 8082:8080
+    networks:
+      - backend
     volumes:
       - ./volume_jenkins:/var/jenkins_home
     environment:
@@ -36,14 +49,24 @@ services:
     container_name: tomcat
     ports:
       - 8084:8080
+    networks:
+      - backend
 
 #volumes:
 #  volume_nginx: {}
 #  volume_jenkins: {}
 #  volume_nexus: {}
 
-#networks:
-#  front:
-#    driver: bridge
-#  back:
-#    driver: bridge
+networks:
+  frontend:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.26.0.0/16
+          gateway: 172.26.0.1
+  backend:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/16
+          gateway: 172.25.0.1
