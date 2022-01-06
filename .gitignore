@@ -1,2 +1,2 @@
-volume_jenkins
-volume_nexus
+volume_jenkins/*
+volume_nexus/*
